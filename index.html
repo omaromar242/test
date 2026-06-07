@@ -1,271 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- info -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dr galaly Courses">
-    <meta name="keywords" content="Dr galaly">
-    <meta name="author" content="Dr galaly">
-    <meta http-equiv="refresh" content="@">
-    <title>Dr galaly</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dr. Galaly Courses – Physics, Math, Chemistry, Calculus">
+  <meta name="author" content="Dr. Galaly">
+  <title>Dr. Galaly – Courses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080810;
+      --surface: #0f0f1a;
+      --card: #13131f;
+      --card-hover: #18182a;
+      --border: rgba(140, 130, 255, 0.12);
+      --border-hover: rgba(140, 130, 255, 0.35);
+      --accent: #7c6fff;
+      --accent-soft: rgba(124, 111, 255, 0.15);
+      --text-primary: #ede9ff;
+      --text-secondary: rgba(237, 233, 255, 0.5);
+      --text-muted: rgba(237, 233, 255, 0.25);
+      --physics: #7c6fff;
+      --math: #4fc3a1;
+      --chemistry: #f4845f;
+      --calculus: #e879a0;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background-color: black; /* sets background to black */
-      color: rgb(228, 219, 219); /* makes text readable */
-      margin: 0; /* optional: remove default margin */
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Sora', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,111,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,111,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow orb */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(124,111,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(8, 8, 16, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 38px;
+      height: 38px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(124,111,255,0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.3px;
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+      font-weight: 300;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 1px;
+    }
+
+    /* ── NAV TABS ── */
+    .nav-bar {
+      position: sticky;
+      top: 73px;
+      z-index: 100;
+      background: rgba(8, 8, 16, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-bar::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .tab-btn:hover { color: var(--text-primary); }
+
+    .tab-btn.active { color: var(--text-primary); }
+    .tab-btn[data-id="physics"].active { border-bottom-color: var(--physics); color: var(--physics); }
+    .tab-btn[data-id="math"].active    { border-bottom-color: var(--math);    color: var(--math);    }
+    .tab-btn[data-id="chemistry"].active { border-bottom-color: var(--chemistry); color: var(--chemistry); }
+    .tab-btn[data-id="calculus"].active  { border-bottom-color: var(--calculus);  color: var(--calculus);  }
+    .tab-btn[data-id="all"].active     { border-bottom-color: var(--accent);   color: var(--accent);   }
+
+    .tab-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .tab-btn[data-id="physics"] .tab-dot { background: var(--physics); }
+    .tab-btn[data-id="math"]    .tab-dot { background: var(--math); }
+    .tab-btn[data-id="chemistry"] .tab-dot { background: var(--chemistry); }
+    .tab-btn[data-id="calculus"]  .tab-dot { background: var(--calculus); }
+    .tab-btn[data-id="all"]     .tab-dot { background: var(--accent); }
+
+    .tab-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 20px;
+      color: var(--text-muted);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .section { display: none; }
+    .section.visible { display: block; animation: fadeIn 0.25s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    #physics .section-eyebrow  { color: var(--physics); }
+    #math .section-eyebrow     { color: var(--math); }
+    #chemistry .section-eyebrow { color: var(--chemistry); }
+    #calculus .section-eyebrow  { color: var(--calculus); }
+    #all .section-eyebrow       { color: var(--accent); }
+
+    .section-name {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .section-meta {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ── VIDEO GRID ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .video-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+      position: relative;
+    }
+
+    .video-card:hover {
+      border-color: var(--border-hover);
+      background: var(--card-hover);
+      transform: translateY(-3px);
+    }
+
+    .video-card-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .video-card-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .video-card-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .video-card iframe {
+      display: block;
+      width: 100%;
+      height: 215px;
+      border: none;
+    }
+
+    /* ── ALL SECTION ── */
+    .subject-block { margin-bottom: 3.5rem; }
+    .subject-block:last-child { margin-bottom: 0; }
+
+    .subject-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subject-heading-line {
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .subject-heading-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .subject-heading-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .site-footer span {
+      color: var(--accent);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .site-header { padding: 0.85rem 1rem; }
+      .header-stats { display: none; }
+      .nav-bar { padding: 0 0.5rem; }
+      .tab-btn { padding: 12px 14px; font-size: 12px; }
+      .main { padding: 1.5rem 1rem 3rem; }
+      .video-grid { grid-template-columns: 1fr; }
+      .section-name { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-<table border="1">
-    <thead>
-    <tr>
-        <td>Dr galaly</td>
-    </tr>
-    </thead>
-</table>
-<h1 style="text-align: center;">Welcome to Dr galaly Website</h1>
-<div style="text-align: center;">
-<br>
-        <h1>Physics</h1>
-        <hr>
-<iframe src="https://archive.org/embed/course1_202509" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-2_20250921_2040" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-3_20250923" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-3-ii" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/20250927_20250927_1928" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/2_20250928_20250928_2131" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-4_20251011" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/final-rev" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-5_20251019_1915" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-5_20251028" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/rev-chapter-5" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-6_202511" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-6_20251111" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/general-rev" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-7_202511" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-8_202512" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/chapter-5_20251214" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<br><br>
-<h1>Math</h1>
-<hr>
-<iframe src="https://archive.org/embed/lecture-5_202510" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-4_202510" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-3-rev" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-4-rev" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-6-complex" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-7_202510" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lecture-8_202510" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-<iframe src="https://archive.org/embed/lucture-8-9" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-    <br><br>
-<h1>chemistry</h1>
-<hr>
-<iframe src="https://archive.org/embed/revision-3_202512" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-    <iframe src="https://archive.org/embed/revision-3.mp-4" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-    <h1>تفاضل</h1>
-<hr>
-<iframe src="https://archive.org/embed/lecture-12-13-14" 
-        width="568" 
-        height="384" 
-        frameborder="5" 
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true" 
-        allowfullscreen>
-</iframe>
-</div>
-<footer style="text-align: center;">
-    <p>&copy; 2025 Dr galaly. All rights reserved.</p>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-brand">
+    <div class="header-logo">Dr<br>G</div>
+    <div>
+      <div class="header-title">Dr. Galaly</div>
+      <div class="header-subtitle">Academic Video Courses</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat-item">
+      <div class="stat-num">28</div>
+      <div class="stat-label">Lectures</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Subjects</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-bar">
+    <button class="tab-btn active" data-id="physics" onclick="showTab('physics', this)">
+      <span class="tab-dot"></span>
+      Physics
+      <span class="tab-count">17</span>
+    </button>
+    <button class="tab-btn" data-id="math" onclick="showTab('math', this)">
+      <span class="tab-dot"></span>
+      Math
+      <span class="tab-count">8</span>
+    </button>
+    <button class="tab-btn" data-id="chemistry" onclick="showTab('chemistry', this)">
+      <span class="tab-dot"></span>
+      Chemistry
+      <span class="tab-count">2</span>
+    </button>
+    <button class="tab-btn" data-id="calculus" onclick="showTab('calculus', this)">
+      <span class="tab-dot"></span>
+      تفاضل
+      <span class="tab-count">1</span>
+    </button>
+    <button class="tab-btn" data-id="all" onclick="showTab('all', this)">
+      <span class="tab-dot"></span>
+      All courses
+      <span class="tab-count">28</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PHYSICS -->
+  <section id="physics" class="section visible">
+    <div class="section-header">
+      <div class="section-eyebrow">Subject</div>
+      <div class="section-name">Physics</div>
+      <div class="section-meta">17 lectures · Chapters 1–8 + Reviews</div>
+    </div>
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 1</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/course1_202509" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 2</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-2_20250921_2040" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 3</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-3_20250923" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 3 – Part II</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-3-ii" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Lecture – Sep 27</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/20250927_20250927_1928" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Lecture 2 – Sep 28</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/2_20250928_20250928_2131" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 4</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-4_20251011" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:#e8d44d"></span>
+          <span class="video-card-title">Final Review</span>
+          <span class="video-card-badge">REVIEW</span>
+        </div>
+        <iframe src="https://archive.org/embed/final-rev" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 5 – Oct 19</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-5_20251019_1915" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 5 – Oct 28</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-5_20251028" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:#e8d44d"></span>
+          <span class="video-card-title">Chapter 5 Review</span>
+          <span class="video-card-badge">REVIEW</span>
+        </div>
+        <iframe src="https://archive.org/embed/rev-chapter-5" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Lecture 6</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-6_202511" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 6 – Nov 11</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-6_20251111" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:#e8d44d"></span>
+          <span class="video-card-title">General Review</span>
+          <span class="video-card-badge">REVIEW</span>
+        </div>
+        <iframe src="https://archive.org/embed/general-rev" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 7</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-7_202511" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 8</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-8_202512" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--physics)"></span>
+          <span class="video-card-title">Chapter 5 – Dec 14</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/chapter-5_20251214" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MATH -->
+  <section id="math" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Subject</div>
+      <div class="section-name">Math</div>
+      <div class="section-meta">8 lectures · Lectures 3–9 + Complex Numbers</div>
+    </div>
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lecture 5</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-5_202510" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lecture 4</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-4_202510" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:#e8d44d"></span>
+          <span class="video-card-title">Lecture 3 Review</span>
+          <span class="video-card-badge">REVIEW</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-3-rev" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:#e8d44d"></span>
+          <span class="video-card-title">Lecture 4 Review</span>
+          <span class="video-card-badge">REVIEW</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-4-rev" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lecture 6 – Complex Numbers</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-6-complex" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lecture 7</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-7_202510" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lecture 8</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-8_202510" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--math)"></span>
+          <span class="video-card-title">Lectures 8–9</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lucture-8-9" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHEMISTRY -->
+  <section id="chemistry" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Subject</div>
+      <div class="section-name">Chemistry</div>
+      <div class="section-meta">2 lectures · Revision sessions</div>
+    </div>
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--chemistry)"></span>
+          <span class="video-card-title">Revision 3</span>
+          <span class="video-card-badge">REVISION</span>
+        </div>
+        <iframe src="https://archive.org/embed/revision-3_202512" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--chemistry)"></span>
+          <span class="video-card-title">Revision 3 (MP4)</span>
+          <span class="video-card-badge">REVISION</span>
+        </div>
+        <iframe src="https://archive.org/embed/revision-3.mp-4" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CALCULUS -->
+  <section id="calculus" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Subject</div>
+      <div class="section-name">تفاضل</div>
+      <div class="section-meta">1 lecture · Lectures 12–13–14</div>
+    </div>
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-card-header">
+          <span class="label-dot" style="background:var(--calculus)"></span>
+          <span class="video-card-title">Lectures 12–13–14</span>
+          <span class="video-card-badge">LECTURE</span>
+        </div>
+        <iframe src="https://archive.org/embed/lecture-12-13-14" allowfullscreen loading="lazy"></iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ALL -->
+  <section id="all" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Overview</div>
+      <div class="section-name">All Courses</div>
+      <div class="section-meta">28 total lectures across 4 subjects</div>
+    </div>
+
+    <div class="subject-block">
+      <div class="subject-heading">
+        <span class="subject-heading-line" style="background:var(--physics)"></span>
+        <span class="subject-heading-text">Physics</span>
+        <span class="subject-heading-count">17 lectures</span>
+      </div>
+      <div class="video-grid">
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 1</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/course1_202509" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 2</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-2_20250921_2040" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 3</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-3_20250923" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 3 – Part II</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-3-ii" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Lecture – Sep 27</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/20250927_20250927_1928" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Lecture 2 – Sep 28</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/2_20250928_20250928_2131" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 4</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-4_20251011" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:#e8d44d"></span><span class="video-card-title">Final Review</span><span class="video-card-badge">REVIEW</span></div><iframe src="https://archive.org/embed/final-rev" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 5 – Oct 19</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-5_20251019_1915" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 5 – Oct 28</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-5_20251028" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:#e8d44d"></span><span class="video-card-title">Chapter 5 Review</span><span class="video-card-badge">REVIEW</span></div><iframe src="https://archive.org/embed/rev-chapter-5" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Lecture 6</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-6_202511" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 6 – Nov 11</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-6_20251111" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:#e8d44d"></span><span class="video-card-title">General Review</span><span class="video-card-badge">REVIEW</span></div><iframe src="https://archive.org/embed/general-rev" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 7</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-7_202511" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 8</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-8_202512" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--physics)"></span><span class="video-card-title">Chapter 5 – Dec 14</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/chapter-5_20251214" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <div class="subject-block">
+      <div class="subject-heading">
+        <span class="subject-heading-line" style="background:var(--math)"></span>
+        <span class="subject-heading-text">Math</span>
+        <span class="subject-heading-count">8 lectures</span>
+      </div>
+      <div class="video-grid">
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lecture 5</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-5_202510" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lecture 4</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-4_202510" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:#e8d44d"></span><span class="video-card-title">Lecture 3 Review</span><span class="video-card-badge">REVIEW</span></div><iframe src="https://archive.org/embed/lecture-3-rev" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:#e8d44d"></span><span class="video-card-title">Lecture 4 Review</span><span class="video-card-badge">REVIEW</span></div><iframe src="https://archive.org/embed/lecture-4-rev" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lecture 6 – Complex Numbers</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-6-complex" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lecture 7</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-7_202510" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lecture 8</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-8_202510" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--math)"></span><span class="video-card-title">Lectures 8–9</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lucture-8-9" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <div class="subject-block">
+      <div class="subject-heading">
+        <span class="subject-heading-line" style="background:var(--chemistry)"></span>
+        <span class="subject-heading-text">Chemistry</span>
+        <span class="subject-heading-count">2 lectures</span>
+      </div>
+      <div class="video-grid">
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--chemistry)"></span><span class="video-card-title">Revision 3</span><span class="video-card-badge">REVISION</span></div><iframe src="https://archive.org/embed/revision-3_202512" allowfullscreen loading="lazy"></iframe></div>
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--chemistry)"></span><span class="video-card-title">Revision 3 (MP4)</span><span class="video-card-badge">REVISION</span></div><iframe src="https://archive.org/embed/revision-3.mp-4" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <div class="subject-block">
+      <div class="subject-heading">
+        <span class="subject-heading-line" style="background:var(--calculus)"></span>
+        <span class="subject-heading-text">تفاضل</span>
+        <span class="subject-heading-count">1 lecture</span>
+      </div>
+      <div class="video-grid">
+        <div class="video-card"><div class="video-card-header"><span class="label-dot" style="background:var(--calculus)"></span><span class="video-card-title">Lectures 12–13–14</span><span class="video-card-badge">LECTURE</span></div><iframe src="https://archive.org/embed/lecture-12-13-14" allowfullscreen loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  &copy; 2025 <span>Dr. Galaly</span>. All rights reserved.
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+  }
+</script>
+
 </body>
 </html>
-
-
